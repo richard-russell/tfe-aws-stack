@@ -1,54 +1,59 @@
 # Copyright (c) HashiCorp, Inc.
 # SPDX-License-Identifier: MPL-2.0
 
-component "a" {
-  for_each = var.regions
+locals {
+  fqdn_parts = split(".", var.tfe_fqdn)
+  zone_name = join(".", slice(local.fqdn_parts, 1, length(local.fqdn_parts)))
+}
 
-  source = "./local-module"
-  # source = "git::https://github.com/hashicorp-services/terraform-aws-tfe-prereqs.git"
-  # source = "git::https://github.com/terraform-aws-modules/terraform-aws-eks.git?ref=v19.21.0"
+component "tfe" {
+
+  source  = "app.terraform.io/richard-russell-org/terraform-enterprise-hvd/aws"
+  version = "0.0.1"
 
   inputs = {
-    region = each.value
+    friendly_name_prefix = var.friendly_name_prefix
+    common_tags          = var.default_tags
+    tfe_operational_mode = "active-active"
+
+    # --- Networking --- #
+    tfe_fqdn       = var.tfe_fqdn
+    vpc_id         = var.upstream_networks.vpc_id
+    lb_is_internal = false
+    ec2_subnet_ids = var.upstream_networks.compute_subnet_ids
+    lb_subnet_ids  = var.upstream_networks.lb_subnet_ids_public
+    rds_subnet_ids = var.upstream_networks.compute_subnet_ids
+
+    # --- Secrets Manager "Bootstrap" Secrets --- #
+    tfe_database_password_secret_arn   = var.upstream_secrets.tfe_database_password_secret_arn
+    tfe_encryption_password_secret_arn = var.upstream_secrets.tfe_encryption_password_secret_arn
+    tfe_license_secret_arn             = var.upstream_secrets.tfe_license_secret_arn
+    tfe_tls_ca_bundle_secret_arn       = var.upstream_pki.tfe_tls_ca_bundle_secret_arn
+    tfe_tls_cert_secret_arn            = var.upstream_pki.tfe_tls_cert_secret_arn
+    tfe_tls_privkey_secret_arn         = var.upstream_pki.tfe_tls_privkey_secret_arn
+
+    # --- DNS (optional) --- #
+    create_route53_tfe_dns_record      = true
+    route53_tfe_hosted_zone_name       = local.zone_name
+    route53_tfe_hosted_zone_is_private = false
+
+    # --- Compute --- #
+    ec2_instance_size          = "t3.large"
+    cidr_allow_ingress_ec2_ssh = ["10.0.0.0/16"]
+    ec2_ssh_key_pair           = "KeyVanCleef"
+
+    # --- Database --- #
+    rds_skip_final_snapshot   = true
+    rds_aurora_instance_class = "db.r5.large"
+    rds_aurora_replica_count  = 0
   }
 
   providers = {
-    aws    = provider.aws.configurations[each.value]
-    random = provider.random.this
+    aws = provider.aws.this
+    # aws     = provider.aws.configurations[each.value]
+    # archive = provider.archive.this
+    # local   = provider.local.this
+    # random  = provider.random.this
   }
 }
 
-# component "b" {
-#   for_each = var.regions
-
-#   source = ""
-
-#   inputs = {
-#     region    = var.regions
-#     bucket_id = component.a[each.value].bucket_id
-#   }
-
-#   providers = {
-#     aws     = provider.aws.configurations[each.value]
-#     archive = provider.archive.this
-#     local   = provider.local.this
-#     random  = provider.random.this
-#   }
-# }
-
-# component "c" {
-#   for_each = var.regions
-
-#   source = ""
-
-#   inputs = {
-#     region               = each.value
-#     lambda_function_name = component.lambda[each.value].function_name
-#     lambda_invoke_arn    = component.lambda[each.value].invoke_arn
-#   }
-
-#   providers = {
-#     aws    = provider.aws.configurations[each.value]
-#     random = provider.random.this
-#   }
-# }

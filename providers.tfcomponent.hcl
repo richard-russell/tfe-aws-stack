@@ -4,30 +4,14 @@
 required_providers {
   aws = {
     source  = "hashicorp/aws"
-    version = "~> 5.7.0"
-  }
-
-  random = {
-    source  = "hashicorp/random"
-    version = "~> 3.5.1"
-  }
-
-  archive = {
-    source  = "hashicorp/archive"
-    version = "~> 2.4.0"
-  }
-
-  local = {
-    source = "hashicorp/local"
-    version = "~> 2.4.0"
+    version = "~> 5.76.0"
   }
 }
 
-provider "aws" "configurations" {
-  for_each = var.regions
+provider "aws" "this" {
 
   config {
-    region = each.value
+    region = var.region
 
     assume_role_with_web_identity {
       role_arn           = var.role_arn
@@ -39,7 +23,3 @@ provider "aws" "configurations" {
     }
   }
 }
-
-provider "random" "this" {}
-provider "archive" "this" {}
-provider "local" "this" {}
