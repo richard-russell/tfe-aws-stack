@@ -23,6 +23,7 @@ component "tfe" {
     ec2_subnet_ids = var.upstream_networks.compute_subnet_ids
     lb_subnet_ids  = var.upstream_networks.lb_subnet_ids_public
     rds_subnet_ids = var.upstream_networks.compute_subnet_ids
+    redis_subnet_ids = var.upstream_networks.compute_subnet_ids
 
     # --- Secrets Manager "Bootstrap" Secrets --- #
     tfe_database_password_secret_arn   = var.upstream_secrets.tfe_database_password_secret_arn
