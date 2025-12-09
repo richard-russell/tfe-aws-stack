@@ -49,6 +49,15 @@ component "tfe" {
     rds_aurora_replica_count  = 0
   }
 
+  providers = {
+    aws = provider.aws.this
+    # aws     = provider.aws.configurations[each.value]
+    # archive = provider.archive.this
+    # local   = provider.local.this
+    # random  = provider.random.this
+  }
+}
+
 output "tfe_url" {
   value       = component.tfe.tfe_url
   type        = string
@@ -60,13 +69,3 @@ output "tfe_create_initial_admin_user_url" {
   type        = string
   description = "URL to create TFE initial admin user."
 }
-
-  providers = {
-    aws = provider.aws.this
-    # aws     = provider.aws.configurations[each.value]
-    # archive = provider.archive.this
-    # local   = provider.local.this
-    # random  = provider.random.this
-  }
-}
-
