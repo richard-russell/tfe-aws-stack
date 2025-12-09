@@ -5,7 +5,7 @@
 #   type = set(string)
 # }
 
-variable "region" {
+variable "aws_region" {
   type        = string
   description = "AWS region to deploy TFE"
 }
