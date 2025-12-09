@@ -49,6 +49,18 @@ component "tfe" {
     rds_aurora_replica_count  = 0
   }
 
+output "tfe_url" {
+  value       = component.tfe.tfe_url
+  type        = string
+  description = "URL to access TFE application based on value of `tfe_fqdn` input."
+}
+
+output "tfe_create_initial_admin_user_url" {
+  value       = component.tfe.tfe_create_initial_admin_user_url
+  type        = string
+  description = "URL to create TFE initial admin user."
+}
+
   providers = {
     aws = provider.aws.this
     # aws     = provider.aws.configurations[each.value]
