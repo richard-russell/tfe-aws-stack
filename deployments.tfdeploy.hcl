@@ -20,12 +20,12 @@ deployment "development" {
     identity_token = identity_token.aws.jwt
     default_tags   = { stacks-preview-example = "lambda-component-expansion-stack" }
 
-    aws_region          = local.aws_region
-    tfe_fqdn          = "tfe-mushypea.richard-russell.sbx.hashidemos.io"
+    aws_region           = local.aws_region
+    tfe_fqdn             = "tfe-mushypea.richard-russell.sbx.hashidemos.io"
     friendly_name_prefix = "mushypea"
-    upstream_networks = upstream_input.aws-tfe-prereqs.development_networks
-    upstream_secrets  = upstream_input.aws-tfe-prereqs.development_secrets
-    upstream_pki      = upstream_input.aws-tfe-prereqs.development_pki
+    upstream_networks    = upstream_input.aws-tfe-prereqs.development_networks
+    upstream_secrets     = upstream_input.aws-tfe-prereqs.development_secrets
+    upstream_pki         = upstream_input.aws-tfe-prereqs.development_pki
   }
 }
 

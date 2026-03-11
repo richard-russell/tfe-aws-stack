@@ -3,7 +3,7 @@
 
 locals {
   fqdn_parts = split(".", var.tfe_fqdn)
-  zone_name = join(".", slice(local.fqdn_parts, 1, length(local.fqdn_parts)))
+  zone_name  = join(".", slice(local.fqdn_parts, 1, length(local.fqdn_parts)))
 }
 
 component "tfe" {
@@ -17,12 +17,12 @@ component "tfe" {
     tfe_operational_mode = "active-active"
 
     # --- Networking --- #
-    tfe_fqdn       = var.tfe_fqdn
-    vpc_id         = var.upstream_networks.vpc_id
-    lb_is_internal = false
-    ec2_subnet_ids = var.upstream_networks.compute_subnet_ids
-    lb_subnet_ids  = var.upstream_networks.lb_subnet_ids_public
-    rds_subnet_ids = var.upstream_networks.compute_subnet_ids
+    tfe_fqdn         = var.tfe_fqdn
+    vpc_id           = var.upstream_networks.vpc_id
+    lb_is_internal   = false
+    ec2_subnet_ids   = var.upstream_networks.compute_subnet_ids
+    lb_subnet_ids    = var.upstream_networks.lb_subnet_ids_public
+    rds_subnet_ids   = var.upstream_networks.compute_subnet_ids
     redis_subnet_ids = var.upstream_networks.compute_subnet_ids
 
     # --- Secrets Manager "Bootstrap" Secrets --- #
@@ -47,6 +47,10 @@ component "tfe" {
     rds_skip_final_snapshot   = true
     rds_aurora_instance_class = "db.r5.large"
     rds_aurora_replica_count  = 0
+
+    # --- Logging --- #
+    tfe_log_forwarding_enabled  = true
+    cloudwatch_log_group_name   = "tfe-${var.friendly_name_prefix}-log-fwd"
   }
 
   providers = {
