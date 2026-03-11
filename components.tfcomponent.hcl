@@ -47,6 +47,7 @@ component "tfe" {
     rds_skip_final_snapshot   = true
     rds_aurora_instance_class = "db.r5.large"
     rds_aurora_replica_count  = 0
+    rds_aurora_engine_version = "16.8"
 
     # --- Logging --- #
     tfe_log_forwarding_enabled  = true
