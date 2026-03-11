@@ -50,8 +50,8 @@ component "tfe" {
 
     # --- Logging --- #
     tfe_log_forwarding_enabled  = true
-    cloudwatch_log_group_name   = "tfe-${var.friendly_name_prefix}-log-fwd"
-    
+    cloudwatch_log_group_name   = "${var.friendly_name_prefix}-tfe-${var.friendly_name_prefix}-log-fwd"
+
   }
 
   providers = {
