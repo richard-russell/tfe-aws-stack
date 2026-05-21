@@ -6,6 +6,14 @@ locals {
   zone_name  = join(".", slice(local.fqdn_parts, 1, length(local.fqdn_parts)))
 }
 
+component "ami_lookup" {
+  source = "./ami_lookup"
+
+  providers = {
+    aws = provider.aws.this
+  }
+}
+
 component "tfe" {
 
   source  = "app.terraform.io/richard-russell-org/terraform-enterprise-hvd/aws"
@@ -39,6 +47,7 @@ component "tfe" {
     route53_tfe_hosted_zone_is_private = false
 
     # --- Compute --- #
+    ec2_ami_id                 = component.ami_lookup.amd64_ami_id
     ec2_instance_size          = "t3.large"
     cidr_allow_ingress_ec2_ssh = ["10.0.0.0/16"]
     ec2_ssh_key_pair           = "KeyVanCleef"
@@ -50,8 +59,8 @@ component "tfe" {
     rds_aurora_engine_version = "16.8"
 
     # --- Logging --- #
-    tfe_log_forwarding_enabled  = true
-    cloudwatch_log_group_name   = "${var.friendly_name_prefix}-tfe-${var.friendly_name_prefix}-log-fwd"
+    tfe_log_forwarding_enabled = true
+    cloudwatch_log_group_name  = "${var.friendly_name_prefix}-tfe-${var.friendly_name_prefix}-log-fwd"
 
   }
 
