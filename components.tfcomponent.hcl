@@ -48,7 +48,8 @@ component "tfe" {
 
     # --- Compute --- #
     ec2_ami_id                 = component.ami_lookup.amd64_ami_id
-    ec2_instance_size          = "t3.large"
+    # ec2_instance_size          = "t3.large"
+    ec2_instance_size          = "m7i.2xlarge"
     cidr_allow_ingress_ec2_ssh = ["10.0.0.0/16"]
     ec2_ssh_key_pair           = "KeyVanCleef"
 
