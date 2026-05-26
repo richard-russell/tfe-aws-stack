@@ -53,8 +53,6 @@ component "tfe" {
     # ec2_instance_size          = "t3.large"
     ec2_instance_size          = "m7i.2xlarge"
     cidr_allow_ingress_ec2_ssh = ["10.0.0.0/16"]
-    cidr_allow_ingress_tfe_metrics_https = ["10.0.0.0/16"]
-    cidr_allow_ingress_tfe_metrics_http  = ["10.0.0.0/16"]
     ec2_ssh_key_pair           = "KeyVanCleef"
 
     # --- Database --- #
@@ -66,6 +64,11 @@ component "tfe" {
     # --- Logging --- #
     tfe_log_forwarding_enabled = true
     cloudwatch_log_group_name  = "${var.friendly_name_prefix}-tfe-${var.friendly_name_prefix}-log-fwd"
+
+    # --- Metrics --- #
+    tfe_metrics_enable = true
+    cidr_allow_ingress_tfe_metrics_https = ["10.0.0.0/16"]
+    cidr_allow_ingress_tfe_metrics_http  = ["10.0.0.0/16"]
 
   }
 
