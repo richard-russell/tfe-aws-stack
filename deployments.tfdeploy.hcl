@@ -18,7 +18,7 @@ deployment "development" {
   inputs = {
     role_arn       = "arn:aws:iam::363715248670:role/tfc-workload-identity-richard-russell-org"
     identity_token = identity_token.aws.jwt
-    default_tags   = { stacks-preview-example = "lambda-component-expansion-stack" }
+    default_tags   = { Service = "tfe", Environment = "development" }
 
     aws_region           = local.aws_region
     tfe_fqdn             = "tfe-mushypea.richard-russell.sbx.hashidemos.io"
