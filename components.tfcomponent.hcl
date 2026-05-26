@@ -17,11 +17,13 @@ component "ami_lookup" {
 component "tfe" {
 
   source  = "app.terraform.io/richard-russell-org/terraform-enterprise-hvd/aws"
-  version = "0.0.1"
+  version = "0.0.2"
 
   inputs = {
     friendly_name_prefix = var.friendly_name_prefix
     common_tags          = var.default_tags
+
+    tfe_image_tag = "2.0.2"
     tfe_operational_mode = "active-active"
 
     # --- Networking --- #
