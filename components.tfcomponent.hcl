@@ -17,7 +17,7 @@ component "ami_lookup" {
 component "tfe" {
 
   source  = "app.terraform.io/richard-russell-org/terraform-enterprise-hvd/aws"
-  version = "0.0.2"
+  version = "0.0.3"
 
   inputs = {
     friendly_name_prefix = var.friendly_name_prefix
@@ -69,6 +69,10 @@ component "tfe" {
     tfe_metrics_enable = true
     cidr_allow_ingress_tfe_metrics_https = ["10.0.0.0/16"]
     cidr_allow_ingress_tfe_metrics_http  = ["10.0.0.0/16"]
+    tfe_additional_environment_variables = {
+      TFE_ATLAS_WEB_WORKER_COUNT = "10"
+      TFE_ATLAS_DB_POOL          = "20"
+    }
 
   }
 
