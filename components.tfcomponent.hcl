@@ -17,7 +17,7 @@ component "ami_lookup" {
 component "tfe" {
 
   source  = "app.terraform.io/richard-russell-org/terraform-enterprise-hvd/aws"
-  version = "0.0.3"
+  version = "0.0.4"
 
   inputs = {
     friendly_name_prefix = var.friendly_name_prefix
